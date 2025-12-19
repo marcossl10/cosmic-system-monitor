@@ -1,5 +1,7 @@
 # COSMIC System Monitor Applet
 
+![Preview](resources/preview.png)
+
 Monitor de sistema limpo e leve para o COSMIC Desktop.
 
 ## Instalação Rápida
