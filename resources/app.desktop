@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=COSMIC System Monitor
+Comment=Clean Resource Monitor for COSMIC
+Type=Application
+Icon=io.github.marcos.SysMonitor-symbolic
+Exec=cosmic-sys-monitor
+Terminal=false
+StartupNotify=true
+Categories=COSMIC;System;Monitor;
+Keywords=COSMIC;system;monitor;cpu;ram;usage;
+NoDisplay=true
+X-CosmicApplet=true
+X-CosmicShrinkable=true
+X-CosmicHoverPopup=Auto
+MimeType=

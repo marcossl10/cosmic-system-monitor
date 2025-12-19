@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.marcos.SysMonitor</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <launchable type="desktop-id">io.github.marcos.SysMonitor.desktop</launchable>
+  <project_license>MIT</project_license>
+  <name>COSMIC System Monitor</name>
+  <summary>Clean Resource Monitor for COSMIC</summary>
+  <icon type="stock">io.github.marcos.SysMonitor-symbolic</icon>
+  <provides>
+    <id>io.github.marcos.SysMonitor</id>
+    <binaries>
+      <binary>cosmic-sys-monitor</binary>
+    </binaries>
+  </provides>
+  <categories>
+    <category>COSMIC</category>
+  </categories>
+</component>
