@@ -5,8 +5,8 @@ Monitor de sistema limpo e leve para o COSMIC Desktop.
 ## Instalação Rápida
 
 ```bash
-git clone https://github.com/marcossl10/cosmic-sys-monitor.git
-cd cosmic-sys-monitor
+git clone https://github.com/marcossl10/cosmic-system-monitor.git
+cd cosmic-system-monitor
 sudo just install
 ```
 
