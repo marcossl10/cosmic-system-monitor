@@ -1,6 +1,6 @@
 # COSMIC System Monitor Applet
 
-![Preview](resources/preview.png)
+<img src="resources/preview.png" width="400" alt="Preview">
 
 Clean and powerful system monitor for the COSMIC Desktop.
 
