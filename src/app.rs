@@ -67,6 +67,7 @@ pub enum Message {
     ToggleGpuTemp,
     ToggleGpuVram,
     ToggleDisk,
+    ToggleDiskSpace,
     ToggleNet,
 }
 
@@ -199,7 +200,7 @@ impl cosmic::Application for AppModel {
                 }
                 Task::none()
             }
-            Message::ToggleCpu | Message::ToggleCpuTemp | Message::ToggleRam | Message::ToggleGpu | Message::ToggleGpuTemp | Message::ToggleGpuVram | Message::ToggleDisk | Message::ToggleNet => {
+            Message::ToggleCpu | Message::ToggleCpuTemp | Message::ToggleRam | Message::ToggleGpu | Message::ToggleGpuTemp | Message::ToggleGpuVram | Message::ToggleDisk | Message::ToggleDiskSpace | Message::ToggleNet => {
                 match message {
                     Message::ToggleCpu => self.config.show_cpu = !self.config.show_cpu,
                     Message::ToggleCpuTemp => self.config.show_cpu_temp = !self.config.show_cpu_temp,
@@ -208,6 +209,7 @@ impl cosmic::Application for AppModel {
                     Message::ToggleGpuTemp => self.config.show_gpu_temp = !self.config.show_gpu_temp,
                     Message::ToggleGpuVram => self.config.show_gpu_vram = !self.config.show_gpu_vram,
                     Message::ToggleDisk => self.config.show_disk = !self.config.show_disk,
+                    Message::ToggleDiskSpace => self.config.show_disk_space = !self.config.show_disk_space,
                     Message::ToggleNet => self.config.show_net = !self.config.show_net,
                     _ => {}
                 }
@@ -290,7 +292,11 @@ impl cosmic::Application for AppModel {
                         let available = d.available_space() / 1024 / 1024 / 1024;
                         let used = total - available;
                         let usage = if total > 0 { (used as f32 / total as f32) * 100.0 } else { 0.0 };
-                        disk_str = format!("{:.0}%| {}/{} GB", usage, used, total);
+                        disk_str = if config.show_disk_space {
+                            format!("{usage:.0}%| {used}/{total} GB")
+                        } else {
+                            format!("{usage:.0}%")
+                        };
                         break;
                     }
                 }
@@ -366,6 +372,11 @@ impl cosmic::Application for AppModel {
             widget::text("Disk").size(13).into(),
             widget::toggler(config.show_disk).on_toggle(move |_| Message::ToggleDisk).into(),
         ]).spacing(8);
+
+        let disk_space_row = widget::row(vec![
+            widget::text("  Disk Space").size(13).into(),
+            widget::toggler(config.show_disk_space).on_toggle(move |_| Message::ToggleDiskSpace).into(),
+        ]).spacing(8);
         
         let net_row = widget::row(vec![
             widget::text("Net").size(13).into(),
@@ -381,6 +392,7 @@ impl cosmic::Application for AppModel {
             gpu_temp_row.into(),
             gpu_vram_row.into(),
             disk_row.into(),
+            disk_space_row.into(),
             net_row.into(),
         ])
             .spacing(12)

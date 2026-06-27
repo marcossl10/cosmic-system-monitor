@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(default)]
 pub struct Config {
     pub update_interval_ms: u64,
     pub show_cpu: bool,
@@ -10,6 +11,7 @@ pub struct Config {
     pub show_gpu_temp: bool,
     pub show_gpu_vram: bool,
     pub show_disk: bool,
+    pub show_disk_space: bool,
     pub show_net: bool,
 }
 
@@ -24,6 +26,7 @@ impl Default for Config {
             show_gpu_temp: false,
             show_gpu_vram: false,
             show_disk: true,
+            show_disk_space: true,
             show_net: true,
         }
     }
