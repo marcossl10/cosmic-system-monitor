@@ -136,7 +136,7 @@ The applet should now appear in your panel configuration.
 - 📊 **CPU Usage** - Real-time processor usage monitoring
 - 💾 **Memory Usage** - RAM usage (percentage and GB)
 - 🎮 **GPU Usage** - Usage, Temperature and VRAM (percentage and GB)
-- 💿 **Disk Usage** - Disk space usage (percentage and GB)
+- 💿 **Disk Usage** - Disk space usage with optional GB details
 - 🌡️ **Temperature** - CPU and GPU temperatures
 - 🌐 **Network** - Real-time download/upload speeds (B/s, KB/s, MB/s)
 - ⚙️ **Configurable** - Toggle metrics on/off via popup menu
