@@ -15,6 +15,8 @@ use std::sync::LazyLock;
 use nvml_wrapper::enum_wrappers::device::TemperatureSensor;
 static NVML: LazyLock<Result<nvml_wrapper::Nvml, nvml_wrapper::error::NvmlError>> = LazyLock::new(nvml_wrapper::Nvml::init);
 
+const BYTES_PER_GB: f64 = 1024.0 * 1024.0 * 1024.0;
+
 // Temperatura GPU via NVML
 fn get_nvidia_temp() -> Option<f32> {
     if let Ok(nvml) = &*NVML {
@@ -241,8 +243,8 @@ impl cosmic::Application for AppModel {
         
         if config.show_ram {
             let ram_info = if self.system.total_memory() > 0 {
-                let used_gb = self.system.used_memory() as f64 / 1024.0 / 1024.0;
-                let total_gb = self.system.total_memory() as f64 / 1024.0 / 1024.0;
+                let used_gb = bytes_to_gb(self.system.used_memory());
+                let total_gb = bytes_to_gb(self.system.total_memory());
                 format!("{:.0}% | {:.1}/{:.1} GB", self.ram_usage, used_gb, total_gb)
             } else {
                 format!("{:.0}%", self.ram_usage)
@@ -263,9 +265,9 @@ impl cosmic::Application for AppModel {
                     info = format!("{} |{:.0}°C", info, self.gpu_temp);
                 }
                 if config.show_gpu_vram && self.gpu_vram_total > 0 {
-                    let used = self.gpu_vram_used / 1024 / 1024;
-                    let total = self.gpu_vram_total / 1024 / 1024;
-                    info = format!("{}|{}/{}GB", info, used, total);
+                    let used = bytes_to_gb(self.gpu_vram_used);
+                    let total = bytes_to_gb(self.gpu_vram_total);
+                    info = format!("{}|{:.1}/{:.1}GB", info, used, total);
                 }
                 info
             } else {
@@ -404,6 +406,10 @@ fn format_speed(bytes: u64) -> String {
     }
 }
 
+fn bytes_to_gb(bytes: u64) -> f64 {
+    bytes as f64 / BYTES_PER_GB
+}
+
 fn read_gpu_usage() -> Option<f32> {
     if let Ok(nvml) = &*NVML {
         if let Some(pci_slot) = get_nvidia_pci_slot() {
@@ -430,6 +436,16 @@ fn read_gpu_usage() -> Option<f32> {
     }
     
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn converts_bytes_to_gb() {
+        assert_eq!(bytes_to_gb(64 * 1024 * 1024 * 1024), 64.0);
+    }
 }
 
 fn read_gpu_vram() -> Option<(u64, u64)> {
