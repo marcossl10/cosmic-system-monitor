@@ -18,6 +18,7 @@ A lightweight system monitoring applet that integrates seamlessly with COSMIC De
 | Ubuntu 22.04+ | ok |
 | Fedora 38+ | ok |
 | Arch Linux | ok | 
+| NixOS | ok |
 
 > **Note**: This applet is designed specifically for COSMIC Desktop. 
 
@@ -110,6 +111,36 @@ This will:
 - Install desktop entry to `/usr/share/applications/`
 - Install app icon to `/usr/share/icons/hicolor/symbolic/apps/`
 - Install metainfo to `/usr/share/metainfo/`
+
+### NixOS
+
+This repository exposes a NixOS module and package through its flake:
+
+```nix
+{
+  inputs.cosmic-system-monitor.url = "github:marcossl10/cosmic-system-monitor";
+
+  outputs = { nixpkgs, cosmic-system-monitor, ... }: {
+    nixosConfigurations.your-host = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        cosmic-system-monitor.nixosModules.default
+        {
+          programs.cosmic-sys-monitor.enable = true;
+        }
+      ];
+    };
+  };
+}
+```
+
+You can also install the package directly:
+
+```nix
+environment.systemPackages = [
+  inputs.cosmic-system-monitor.packages.${pkgs.stdenv.hostPlatform.system}.default
+];
+```
 
 ### Step 3: Restart COSMIC Panel
 
